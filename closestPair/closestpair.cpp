@@ -79,6 +79,7 @@ Outcome efficient(const vector<Point>& data) {
     int rightIndex{data.size()-1};
 
     divide(data,leftIndex,rightIndex);
+    int delta = getDelta(data,leftIndex,rightIndex);
 
 
     return Outcome();
@@ -94,10 +95,30 @@ Outcome divide(const vector<Point>& data,int indexLeft,int indexRight){
     Outcome rOut = divide(data,mid + 1,indexRight);
 
     long long delta = min(lOut.dsq,rOut.dsq);
+    conquer;
 
 }
 
-Outcome conquer(){}
+long long getDelta(const vector<Point>& data,int indexLeft,int indexRight){ // return delta
+    if((indexRight - indexLeft + 1) <= CUTOFF){ //base case
+        return brute(data).dsq;
+    }
+
+    int mid = (indexLeft + indexRight) / 2;
+    long long lOutcome = getDelta(data,indexLeft,mid);
+    long long rOutcome = getDelta(data,mid + 1,indexRight);
+
+    long long delta = min(lOutcome,rOutcome);
+    return delta;
+
+}
+
+
+Outcome conquer(const vector<Point>& data, Point* buffer, int indexLeft, int indexRight, long long delta){
+    //
+    long long deltaRegion = 2 * delta;
+    
+}   
 
 // An extra credit algorithm
 Outcome extra(const vector<Point>& data) {
