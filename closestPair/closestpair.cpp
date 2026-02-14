@@ -37,6 +37,45 @@ Outcome brute(const vector<Point>& data) {
 #define CUTOFF 3          // you may change this or use the makefile to redefine the value
 #endif
 
+//int splitEqualXs(const vector<Point>& data, int xDivI) {
+//    long midpointX = (data->at(xDivI).x);
+//    int i, j = xDivI;
+//    
+//    while (i > 0 && (data->at(xDivI - 1)).x == midpointX) {
+//        i--;
+//    }
+//    while (j < data->size()-1 && (data->at(xDivI+1)).x == midpointX) {
+//        j++;
+//    }
+//
+//}
+
+Outcome conquer(const vector<Point>& data, int iL, int iR, long long delta) {
+
+}
+
+Outcome divide(const vector<Point>& data, int iL, int iR) {
+    
+
+    
+    int xDivI = (iL + iR) / 2;
+
+    if ((iR - iL + 1) <= CUTOFF) {
+        // Call brute function
+        //float xDivI; // Use a float to safeguard against the case that no points are assigned to a side.
+    }
+
+    Outcome lOut = divide(data, iL, xDivI);
+
+    Outcome rOut = divide(data, xDivI+1, iR);
+
+    long long delta = min(lOut.dsq, rOut.dsq);
+
+    return conquer(data, iL, iR, delta);
+
+
+
+}
 
 // The student's implementation of the O(n log n) divide-and-conquer approach
 Outcome efficient(const vector<Point>& data) {
