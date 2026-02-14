@@ -5,6 +5,36 @@
 #include <sys/time.h>  // used to seed srand for extra credit
 using namespace std;
 
+
+
+//comparison function for std::qsort
+//int cmp(const void *a, const void *b);
+/*
+int compX(const void *p,const void *q){
+    Point* pp = (Point *)p;
+    Point* qq = (Point *)q;
+
+    if (compareByX(*pp,*qq)){ // if qq is bigger than pp, return true
+        return 1;
+    }else{
+        return -1;
+    }
+}
+
+int compY(const void *p,const void *q){
+    Point* pp = (Point *)p;
+    Point* qq = (Point *)q;
+
+    if (compareByY(*pp,*qq)){ // if qq is bigger than pp, return true
+        return 1;
+    }else{
+        return -1;
+    }
+}
+
+*/
+
+
 // For convenience, we provide a brute-force implementation that can be applied
 // to any portion of a larger sequence by providing start and stop iterators.
 template <typename IT>
@@ -41,9 +71,33 @@ Outcome brute(const vector<Point>& data) {
 // The student's implementation of the O(n log n) divide-and-conquer approach
 Outcome efficient(const vector<Point>& data) {
     std::cout << "Cutoff " << CUTOFF << " being used." << std::endl;
-    
+    //qsort(data.data(),data.size(),);
+
+    sort(data.begin(),data.end(),compareByX); //inplace sort by x
+
+    int leftIndex{0};
+    int rightIndex{data.size()-1};
+
+    divide(data,leftIndex,rightIndex);
+
+
     return Outcome();
 }
+
+Outcome divide(const vector<Point>& data,int indexLeft,int indexRight){
+    if((indexRight - indexLeft + 1) <= CUTOFF){
+        brute(data);
+    }
+    int mid = (indexLeft + indexRight) / 2;
+
+    Outcome lOut = divide(data,indexLeft,mid);
+    Outcome rOut = divide(data,mid + 1,indexRight);
+
+    long long delta = min(lOut.dsq,rOut.dsq);
+
+}
+
+Outcome conquer(){}
 
 // An extra credit algorithm
 Outcome extra(const vector<Point>& data) {
