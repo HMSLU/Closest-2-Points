@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D2084CAB-CFD5-12F6-60F8-09D0A5CEE962}|Closest 2 Points.vcxproj|C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestpair\\closestpair.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D2084CAB-CFD5-12F6-60F8-09D0A5CEE962}|Closest 2 Points.vcxproj|solutionrelative:closestpair\\closestpair.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "closestpair.cpp",
+              "DocumentMoniker": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.cpp",
+              "RelativeDocumentMoniker": "closestPair\\closestpair.cpp",
+              "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.cpp",
+              "RelativeToolTip": "closestPair\\closestpair.cpp",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAACoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-02-14T02:35:25.749Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

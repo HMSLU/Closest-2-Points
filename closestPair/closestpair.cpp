@@ -37,41 +37,36 @@ Outcome brute(const vector<Point>& data) {
 #define CUTOFF 3          // you may change this or use the makefile to redefine the value
 #endif
 
-//int splitEqualXs(const vector<Point>& data, int xDivI) {
-//    long midpointX = (data->at(xDivI).x);
-//    int i, j = xDivI;
-//    
-//    while (i > 0 && (data->at(xDivI - 1)).x == midpointX) {
-//        i--;
-//    }
-//    while (j < data->size()-1 && (data->at(xDivI+1)).x == midpointX) {
-//        j++;
-//    }
-//
-//}
+#include <iterator>
 
-Outcome conquer(const vector<Point>& data, int iL, int iR, long long delta) {
+
+
+Outcome conquer(const vector<Point>& data, Point* buffer, int iL, int iR, long long delta) {
 
 }
 
-Outcome divide(const vector<Point>& data, int iL, int iR) {
+Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
     
-
-    
-    int xDivI = (iL + iR) / 2;
-
     if ((iR - iL + 1) <= CUTOFF) {
         // Call brute function
-        //float xDivI; // Use a float to safeguard against the case that no points are assigned to a side.
+        const_iterator start = data->begin() + iL + 1;
+        const_iterator end = data->begin() + iR + 1;
+        miniData = data;
+        brute();
     }
+   
 
-    Outcome lOut = divide(data, iL, xDivI);
+    int xDivI = (iL + iR) / 2;
 
-    Outcome rOut = divide(data, xDivI+1, iR);
+
+
+    Outcome lOut = divide(data, buffer, iL, xDivI);
+
+    Outcome rOut = divide(data, buffer, xDivI+1, iR);
 
     long long delta = min(lOut.dsq, rOut.dsq);
 
-    return conquer(data, iL, iR, delta);
+    return conquer(data, buffer, iL, iR, delta);
 
 
 
@@ -81,6 +76,12 @@ Outcome divide(const vector<Point>& data, int iL, int iR) {
 Outcome efficient(const vector<Point>& data) {
     std::cout << "Cutoff " << CUTOFF << " being used." << std::endl;
     
+    Point* buffer = new Point[data->size()/2 + 1]; // size/2 + 1 because we plan to never sort the left half y-wise.
+
+
+    delete[] buffer;
+    buffer = nullptr;
+
     return Outcome();
 }
 
