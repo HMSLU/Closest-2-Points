@@ -34,6 +34,20 @@ int compY(const void *p,const void *q){
 
 */
 
+void sortX(const vector<Point>& data){
+    sort(data.begin(),data.end(),compareByX); //inplace sort by x
+}
+void sortY(const vector<Point>& data,vector<Point>::iterator start,vector<Point>::iterator end, Point* buffer){
+    //inplace sort by Y,push values to scratch buffer space
+    int i = 0;
+    vector<Point>::iterator it;
+    for (it = start; it != end; it++){
+        buffer[i] = *it;
+        i++;
+    }   
+    
+    sort(buffer,buffer+i+1,compareByY); //must add one because i is an index, not n, where n = size of the array
+}
 
 // For convenience, we provide a brute-force implementation that can be applied
 // to any portion of a larger sequence by providing start and stop iterators.
@@ -71,16 +85,13 @@ Outcome brute(const vector<Point>& data) {
 // The student's implementation of the O(n log n) divide-and-conquer approach
 Outcome efficient(const vector<Point>& data) {
     std::cout << "Cutoff " << CUTOFF << " being used." << std::endl;
-    //qsort(data.data(),data.size(),);
 
-    sort(data.begin(),data.end(),compareByX); //inplace sort by x
+    sortX(data);
 
     int leftIndex{0};
     int rightIndex{data.size()-1};
 
     divide(data,leftIndex,rightIndex);
-    int delta = getDelta(data,leftIndex,rightIndex);
-
 
     return Outcome();
 }
@@ -95,10 +106,12 @@ Outcome divide(const vector<Point>& data,int indexLeft,int indexRight){
     Outcome rOut = divide(data,mid + 1,indexRight);
 
     long long delta = min(lOut.dsq,rOut.dsq);
-    conquer;
+
+    
+    combine(data,);
 
 }
-
+/*
 long long getDelta(const vector<Point>& data,int indexLeft,int indexRight){ // return delta
     if((indexRight - indexLeft + 1) <= CUTOFF){ //base case
         return brute(data).dsq;
@@ -112,12 +125,19 @@ long long getDelta(const vector<Point>& data,int indexLeft,int indexRight){ // r
     return delta;
 
 }
+*/
 
-
-Outcome conquer(const vector<Point>& data, Point* buffer, int indexLeft, int indexRight, long long delta){
+Outcome combine(const vector<Point>& data, Point* buffer, int indexLeft, int indexRight, long long delta){
     //
+
     long long deltaRegion = 2 * delta;
-    
+    int mid = (indexLeft + indexRight) / 2;
+
+    for (int i = (mid - delta); i < (mid + delta); i++){
+
+    }
+
+    //buffer = data[divXIndex - delta: divXIndex + delta]
 }   
 
 // An extra credit algorithm
