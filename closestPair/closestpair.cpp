@@ -7,47 +7,7 @@ using namespace std;
 
 
 
-//comparison function for std::qsort
-//int cmp(const void *a, const void *b);
-/*
-int compX(const void *p,const void *q){
-    Point* pp = (Point *)p;
-    Point* qq = (Point *)q;
 
-    if (compareByX(*pp,*qq)){ // if qq is bigger than pp, return true
-        return 1;
-    }else{
-        return -1;
-    }
-}
-
-int compY(const void *p,const void *q){
-    Point* pp = (Point *)p;
-    Point* qq = (Point *)q;
-
-    if (compareByY(*pp,*qq)){ // if qq is bigger than pp, return true
-        return 1;
-    }else{
-        return -1;
-    }
-}
-
-*/
-
-void sortX(const vector<Point>& data){
-    sort(data.begin(),data.end(),compareByX); //inplace sort by x
-}
-void sortY(const vector<Point>& data,vector<Point>::iterator start,vector<Point>::iterator end, Point* buffer){
-    //inplace sort by Y,push values to scratch buffer space
-    int i = 0;
-    vector<Point>::iterator it;
-    for (it = start; it != end; it++){
-        buffer[i] = *it;
-        i++;
-    }   
-    
-    sort(buffer,buffer+i+1,compareByY); //must add one because i is an index, not n, where n = size of the array
-}
 
 // For convenience, we provide a brute-force implementation that can be applied
 // to any portion of a larger sequence by providing start and stop iterators.
@@ -83,10 +43,24 @@ Outcome brute(const vector<Point>& data) {
 
 #include <iterator>
 
+void sortX(const vector<Point>& data) {
+    sort(data.begin(), data.end(), compareByX); //inplace sort by x
+}
+
+void sortY(const vector<Point>& data, vector<Point>::const_iterator start, vector<Point>::const_iterator end, Point* buffer) {
+    // sort by Y,push values to scratch buffer space
+    int i = 0;
+    vector<Point>::const_iterator it;
+    for (it = start; it != end; it++) {
+        buffer[i] = *it;
+        i++;
+    }
+
+    sort(buffer, buffer + i + 1, compareByY); //must add one because i is an index, not n, where n = size of the array
+}
 
 
 Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, long long delta) {
-    /*vector<Point> data_WorkingVariable = data;*/
     int closestLeftPointIndex;
     int closestRightPointIndex;
 
@@ -99,8 +73,14 @@ Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xD
     }
 
     int rPointsWithinDelta = 0;
-    // sort y into buffer
+    int yInDelta = xDivI + 1;
+    for (; data[yInDelta].x < data[xDivI].x + delta; yInDelta++) {
+        rPointsWithinDelta++;
+    } 
 
+    vector<Point>::const_iterator start = data.begin() + xDivI + 1;
+    vector<Point>::const_iterator end = data.begin() + yInDelta;
+    sortY(data, start, end, buffer);
 
 
     for (int i = iL; i <= xDivI; i++) {
@@ -125,6 +105,9 @@ Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xD
         }
 
     }
+
+    return Outcome(data[closestLeftPointIndex], buffer[closestRightPointIndex]);
+
 }
 
 Outcome divide(const vector<Point>&data, Point* buffer, int iL, int iR) {
@@ -151,6 +134,8 @@ Outcome divide(const vector<Point>&data, Point* buffer, int iL, int iR) {
 
 
 
+    return ;
+
 }
 
 // The student's implementation of the O(n log n) divide-and-conquer approach
@@ -165,19 +150,29 @@ Outcome efficient(const vector<Point>& data) {
     return Outcome();
 }
 
-Outcome divide(const vector<Point>& data,int indexLeft,int indexRight){
-    if((indexRight - indexLeft + 1) <= CUTOFF){
-        brute(data);
+Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
+
+    if ((iR - iL + 1) <= CUTOFF) { // Call brute function
+        vector<Point>::const_iterator start = data.begin() + iL;
+        vector<Point>::const_iterator end = data.begin() + iR + 1; // +1 because iterator must point 1 past desired last element
+        vector<Point> dataSubset(start, end);
+        return brute(dataSubset);
     }
-    int mid = (indexLeft + indexRight) / 2;
 
-    Outcome lOut = divide(data,indexLeft,mid);
-    Outcome rOut = divide(data,mid + 1,indexRight);
 
-    long long delta = min(lOut.dsq,rOut.dsq);
+    int xDivI = (iL + iR) / 2;
 
-    
-    combine(data,);
+
+
+    Outcome lOut = divide(data, buffer, iL, xDivI);
+
+    Outcome rOut = divide(data, buffer, xDivI + 1, iR);
+
+    long long delta = min(lOut.dsq, rOut.dsq);
+
+    Outcome cOut = combine(data, buffer, iL, iR, xDivI, delta);
+
+
 
 }
 /*

@@ -9,18 +9,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:closestPair\\closestpair.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:closestPair\\point.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\driver.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:closestPair\\driver.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:closestPair\\point.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -40,47 +28,10 @@
               "RelativeDocumentMoniker": "closestPair\\closestpair.cpp",
               "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.cpp",
               "RelativeToolTip": "closestPair\\closestpair.cpp",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAAC0AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAADgAAAAAAAAAAAAuwEwAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-02-13T23:20:15.746Z",
-              "IsPinned": true,
+              "WhenOpened": "2026-02-15T20:58:49.827Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "driver.cpp",
-              "DocumentMoniker": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\driver.cpp",
-              "RelativeDocumentMoniker": "closestPair\\driver.cpp",
-              "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\driver.cpp",
-              "RelativeToolTip": "closestPair\\driver.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD4AAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-02-13T23:29:52.43Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "point.h",
-              "DocumentMoniker": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.h",
-              "RelativeDocumentMoniker": "closestPair\\point.h",
-              "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.h",
-              "RelativeToolTip": "closestPair\\point.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-02-13T23:28:48.163Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "point.cpp",
-              "DocumentMoniker": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.cpp",
-              "RelativeDocumentMoniker": "closestPair\\point.cpp",
-              "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.cpp",
-              "RelativeToolTip": "closestPair\\point.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-02-13T23:28:03.751Z"
             },
             {
               "$type": "Document",
@@ -90,9 +41,14 @@
               "RelativeDocumentMoniker": "closestPair\\closestpair.h",
               "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.h",
               "RelativeToolTip": "closestPair\\closestpair.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-02-13T23:27:23.759Z"
+              "WhenOpened": "2026-02-15T21:16:47.962Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             }
           ]
         }

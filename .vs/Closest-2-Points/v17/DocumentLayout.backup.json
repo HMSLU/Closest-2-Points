@@ -40,7 +40,7 @@
               "RelativeDocumentMoniker": "closestPair\\closestpair.cpp",
               "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.cpp",
               "RelativeToolTip": "closestPair\\closestpair.cpp",
-              "ViewState": "AgIAACcAAAAAAAAAAAAAADgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAAC0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-02-13T23:20:15.746Z",
               "IsPinned": true,
@@ -56,8 +56,7 @@
               "RelativeToolTip": "closestPair\\driver.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAD4AAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-02-13T23:29:52.43Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-13T23:29:52.43Z"
             },
             {
               "$type": "Document",
@@ -69,8 +68,7 @@
               "RelativeToolTip": "closestPair\\point.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-02-13T23:28:48.163Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-13T23:28:48.163Z"
             },
             {
               "$type": "Document",
@@ -82,8 +80,7 @@
               "RelativeToolTip": "closestPair\\point.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-02-13T23:28:03.751Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-13T23:28:03.751Z"
             },
             {
               "$type": "Document",
@@ -95,8 +92,7 @@
               "RelativeToolTip": "closestPair\\closestpair.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-02-13T23:27:23.759Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-13T23:27:23.759Z"
             }
           ]
         }
