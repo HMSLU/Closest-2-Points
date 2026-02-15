@@ -172,7 +172,15 @@ Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
 
     Outcome cOut = combine(data, buffer, iL, iR, xDivI, delta);
 
-
+    if (lOut.dsq <= rOut.dsq && lOut.dsq <= cOut.dsq) {
+        return lOut;
+    }
+    else if (rOut.dsq <= lOut.dsq && rOut.dsq <= cOut.dsq) {
+        return rOut;
+    }
+    else {
+        return cOut;
+    }
 
 }
 /*
