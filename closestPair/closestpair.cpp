@@ -5,6 +5,50 @@
 #include <sys/time.h>  // used to seed srand for extra credit
 using namespace std;
 
+
+
+//comparison function for std::qsort
+//int cmp(const void *a, const void *b);
+/*
+int compX(const void *p,const void *q){
+    Point* pp = (Point *)p;
+    Point* qq = (Point *)q;
+
+    if (compareByX(*pp,*qq)){ // if qq is bigger than pp, return true
+        return 1;
+    }else{
+        return -1;
+    }
+}
+
+int compY(const void *p,const void *q){
+    Point* pp = (Point *)p;
+    Point* qq = (Point *)q;
+
+    if (compareByY(*pp,*qq)){ // if qq is bigger than pp, return true
+        return 1;
+    }else{
+        return -1;
+    }
+}
+
+*/
+
+void sortX(const vector<Point>& data){
+    sort(data.begin(),data.end(),compareByX); //inplace sort by x
+}
+void sortY(const vector<Point>& data,vector<Point>::iterator start,vector<Point>::iterator end, Point* buffer){
+    //inplace sort by Y,push values to scratch buffer space
+    int i = 0;
+    vector<Point>::iterator it;
+    for (it = start; it != end; it++){
+        buffer[i] = *it;
+        i++;
+    }   
+    
+    sort(buffer,buffer+i+1,compareByY); //must add one because i is an index, not n, where n = size of the array
+}
+
 // For convenience, we provide a brute-force implementation that can be applied
 // to any portion of a larger sequence by providing start and stop iterators.
 template <typename IT>
@@ -120,6 +164,50 @@ Outcome efficient(const vector<Point>& data) {
 
     return Outcome();
 }
+
+Outcome divide(const vector<Point>& data,int indexLeft,int indexRight){
+    if((indexRight - indexLeft + 1) <= CUTOFF){
+        brute(data);
+    }
+    int mid = (indexLeft + indexRight) / 2;
+
+    Outcome lOut = divide(data,indexLeft,mid);
+    Outcome rOut = divide(data,mid + 1,indexRight);
+
+    long long delta = min(lOut.dsq,rOut.dsq);
+
+    
+    combine(data,);
+
+}
+/*
+long long getDelta(const vector<Point>& data,int indexLeft,int indexRight){ // return delta
+    if((indexRight - indexLeft + 1) <= CUTOFF){ //base case
+        return brute(data).dsq;
+    }
+
+    int mid = (indexLeft + indexRight) / 2;
+    long long lOutcome = getDelta(data,indexLeft,mid);
+    long long rOutcome = getDelta(data,mid + 1,indexRight);
+
+    long long delta = min(lOutcome,rOutcome);
+    return delta;
+
+}
+*/
+
+Outcome combine(const vector<Point>& data, Point* buffer, int indexLeft, int indexRight, long long delta){
+    //
+
+    long long deltaRegion = 2 * delta;
+    int mid = (indexLeft + indexRight) / 2;
+
+    for (int i = (mid - delta); i < (mid + delta); i++){
+
+    }
+
+    //buffer = data[divXIndex - delta: divXIndex + delta]
+}   
 
 // An extra credit algorithm
 Outcome extra(const vector<Point>& data) {
