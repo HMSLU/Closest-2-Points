@@ -43,12 +43,15 @@ Outcome brute(const vector<Point>& data) {
 
 #include <iterator>
 
+Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, long long delta);
+Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR);
+
 void sortX(const vector<Point>& data) {
     sort(data.begin(), data.end(), compareByX); //inplace sort by x
 }
 
 void sortY(const vector<Point>& data, vector<Point>::const_iterator start, vector<Point>::const_iterator end, Point* buffer) {
-    // sort by Y,push values to scratch buffer space
+    // sort by Y,push values to scratch buffer space.
     int i = 0;
     vector<Point>::const_iterator it;
     for (it = start; it != end; it++) {
@@ -110,46 +113,6 @@ Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xD
 
 }
 
-Outcome divide(const vector<Point>&data, Point* buffer, int iL, int iR) {
-
-    if ((iR - iL + 1) <= CUTOFF) { // Call brute function
-        vector<Point>::const_iterator start = data.begin() + iL;
-        vector<Point>::const_iterator end = data.begin() + iR + 1; // +1 because iterator must point 1 past desired last element
-        vector<Point> dataSubset(start, end);
-        return brute(dataSubset);
-    }
-   
-
-    int xDivI = (iL + iR) / 2;
-
-
-
-    Outcome lOut = divide(data, buffer, iL, xDivI);
-
-    Outcome rOut = divide(data, buffer, xDivI+1, iR);
-
-    long long delta = min(lOut.dsq, rOut.dsq);
-
-    Outcome cOut = combine(data, buffer, iL, iR, xDivI, delta);
-
-
-
-    return ;
-
-}
-
-// The student's implementation of the O(n log n) divide-and-conquer approach
-Outcome efficient(const vector<Point>& data) {
-    std::cout << "Cutoff " << CUTOFF << " being used." << std::endl;
-    Point* buffer = new Point[data.size()/2 + 1]; // size/2 + 1 because we plan to never sort the left half y-wise.
-
-
-    delete[] buffer;
-    buffer = nullptr;
-
-    return Outcome();
-}
-
 Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
 
     if ((iR - iL + 1) <= CUTOFF) { // Call brute function
@@ -183,34 +146,22 @@ Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
     }
 
 }
-/*
-long long getDelta(const vector<Point>& data,int indexLeft,int indexRight){ // return delta
-    if((indexRight - indexLeft + 1) <= CUTOFF){ //base case
-        return brute(data).dsq;
-    }
 
-    int mid = (indexLeft + indexRight) / 2;
-    long long lOutcome = getDelta(data,indexLeft,mid);
-    long long rOutcome = getDelta(data,mid + 1,indexRight);
+// The student's implementation of the O(n log n) divide-and-conquer approach
+Outcome efficient(const vector<Point>& data) {
+    std::cout << "Cutoff " << CUTOFF << " being used." << std::endl;
+    Point* buffer = new Point[data.size()/2 + 1]; // size/2 + 1 because we plan to never sort the left half y-wise.
 
-    long long delta = min(lOutcome,rOutcome);
-    return delta;
+    divide(data, buffer, 0, data.size()-1);
 
+    delete[] buffer;
+    buffer = nullptr;
+
+    return Outcome();
 }
-*/
 
-Outcome combine(const vector<Point>& data, Point* buffer, int indexLeft, int indexRight, long long delta){
-    //
 
-    long long deltaRegion = 2 * delta;
-    int mid = (indexLeft + indexRight) / 2;
-
-    for (int i = (mid - delta); i < (mid + delta); i++){
-
-    }
-
-    //buffer = data[divXIndex - delta: divXIndex + delta]
-}   
+ 
 
 // An extra credit algorithm
 Outcome extra(const vector<Point>& data) {
