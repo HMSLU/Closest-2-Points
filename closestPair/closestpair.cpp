@@ -41,18 +41,55 @@ Outcome brute(const vector<Point>& data) {
 
 
 
-Outcome conquer(const vector<Point>& data, Point* buffer, int iL, int iR, long long delta) {
+Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, long long delta) {
+    /*vector<Point> data_WorkingVariable = data;*/
+    int closestLeftPointIndex;
+    int closestRightPointIndex;
 
+    while (data[iL].x < data[xDivI].x - delta) {
+        iL++;
+    }
+
+    while (data[iR].x > data[xDivI].x + delta) {
+        iR--;
+    }
+
+    int rPointsWithinDelta = 0;
+    // sort y into buffer
+
+
+
+    for (int i = iL; i <= xDivI; i++) {
+
+        for (int j = 0; j < rPointsWithinDelta; j++) {
+            if (buffer[j].y > data[i].y + delta) {
+                continue;
+            }
+            else if (buffer[j].y < data[i].y - delta) {
+                break;
+            }
+            else {
+
+                if (distSquared(data[i],buffer[j]) < delta) {
+                    closestLeftPointIndex = i;
+                    closestRightPointIndex = j;
+                    delta = distSquared(data[i], buffer[j]);
+
+                }
+
+            }
+        }
+
+    }
 }
 
-Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
-    
-    if ((iR - iL + 1) <= CUTOFF) {
-        // Call brute function
-        const_iterator start = data->begin() + iL + 1;
-        const_iterator end = data->begin() + iR + 1;
-        miniData = data;
-        brute();
+Outcome divide(const vector<Point>&data, Point* buffer, int iL, int iR) {
+
+    if ((iR - iL + 1) <= CUTOFF) { // Call brute function
+        vector<Point>::const_iterator start = data.begin() + iL;
+        vector<Point>::const_iterator end = data.begin() + iR + 1; // +1 because iterator must point 1 past desired last element
+        vector<Point> dataSubset(start, end);
+        return brute(dataSubset);
     }
    
 
@@ -66,7 +103,7 @@ Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
 
     long long delta = min(lOut.dsq, rOut.dsq);
 
-    return conquer(data, buffer, iL, iR, delta);
+    Outcome cOut = combine(data, buffer, iL, iR, xDivI, delta);
 
 
 
@@ -75,8 +112,7 @@ Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
 // The student's implementation of the O(n log n) divide-and-conquer approach
 Outcome efficient(const vector<Point>& data) {
     std::cout << "Cutoff " << CUTOFF << " being used." << std::endl;
-    
-    Point* buffer = new Point[data->size()/2 + 1]; // size/2 + 1 because we plan to never sort the left half y-wise.
+    Point* buffer = new Point[data.size()/2 + 1]; // size/2 + 1 because we plan to never sort the left half y-wise.
 
 
     delete[] buffer;

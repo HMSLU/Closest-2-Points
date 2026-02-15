@@ -1,12 +1,106 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:closestPair\\closestpair.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:closestPair\\closestpair.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:closestPair\\point.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\driver.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:closestPair\\driver.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:closestPair\\point.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "closestpair.cpp",
+              "DocumentMoniker": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.cpp",
+              "RelativeDocumentMoniker": "closestPair\\closestpair.cpp",
+              "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.cpp",
+              "RelativeToolTip": "closestPair\\closestpair.cpp",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAADgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-02-13T23:20:15.746Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "driver.cpp",
+              "DocumentMoniker": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\driver.cpp",
+              "RelativeDocumentMoniker": "closestPair\\driver.cpp",
+              "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\driver.cpp",
+              "RelativeToolTip": "closestPair\\driver.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD4AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-02-13T23:29:52.43Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "point.h",
+              "DocumentMoniker": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.h",
+              "RelativeDocumentMoniker": "closestPair\\point.h",
+              "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.h",
+              "RelativeToolTip": "closestPair\\point.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-02-13T23:28:48.163Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "point.cpp",
+              "DocumentMoniker": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.cpp",
+              "RelativeDocumentMoniker": "closestPair\\point.cpp",
+              "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\point.cpp",
+              "RelativeToolTip": "closestPair\\point.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-02-13T23:28:03.751Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "closestpair.h",
+              "DocumentMoniker": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.h",
+              "RelativeDocumentMoniker": "closestPair\\closestpair.h",
+              "ToolTip": "C:\\Users\\Henry Morgan\\source\\repos\\HMSLU\\Closest-2-Points\\closestPair\\closestpair.h",
+              "RelativeToolTip": "closestPair\\closestpair.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-02-13T23:27:23.759Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
