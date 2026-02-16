@@ -68,13 +68,44 @@ Outcome combine(vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, l
     int closestLeftPointIndex = -1;
     int closestRightPointIndex = -1;
     
-    while (pow(abs(data[iL].x - data[xDivI].x), 2) > delta) { // Align iL to the first point on the left that is within the delta region.
-        iL++;
+    std::cout << "iL before: " << iL << endl;
+    std::cout << "size of data: " << data.size() << endl;
+    std::cout << "data[iL] x,y  " << &data[iL] << " " << data[iL].x << " " << data[iL].y << endl;
+
+    if (iL >= xDivI) { // Catches the error case in which iL >= xDivI
+        std::cout << "iL >= than xDivI" << endl;
+        cout << "iL: " << iL << " | xDivI: " << xDivI << endl;
+        exit(-1);
+
     }
+
+    int runs = 0; // Test line
+    while (pow(data[iL].x - data[xDivI].x, 2) > delta) { // Align iL to the first point on the left that is within the delta region.
+        iL++;
+        runs++;
+
+        if (iL >= xDivI) { // Catches the error case in which iL >= xDivI
+            std::cout << "ERROR: iL >= than xDivI" << endl;
+            cout << "iL: " << iL << " | xDivI: " << xDivI << endl;
+            cout << "X difference squared: " << pow(abs(data[iL].x - data[xDivI].x), 2) << endl;
+            cout << "Delta squared: " << delta << endl;
+
+            exit(-1);
+
+        }
+
+        //cout << runs << endl;
+    }
+
+    std::cout << "iL after: " << iL << endl;
+
+    std::cout << "iR before: " << iR << endl;
 
     while (pow(abs(data[iR].x - data[xDivI].x), 2) > delta) { // Allign iR to the first point on the right that is within the delta region.
         iR--;
     }
+
+    std::cout << "iR before: " << iR << endl;
     
     int rPointsWithinDelta = 0;
     int yInDelta = xDivI + 1; // yInDelta represents the index 
@@ -87,6 +118,7 @@ Outcome combine(vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, l
     vector<Point>::const_iterator start = data.begin() + xDivI + 1;
     vector<Point>::const_iterator end = data.begin() + yInDelta;
     sortY(data, start, end, buffer);
+    std::cout << "Line 90." << endl;
 
 
     for (int i = iL; i <= xDivI; i++) {
@@ -111,11 +143,13 @@ Outcome combine(vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, l
         }
 
     }
+    std::cout << "Line 115." << endl;
 
     if (closestLeftPointIndex == -1 || closestRightPointIndex == -1) {
+        std::cout << "Invalid points." << endl;
         return Outcome(); // If there were no valid points, return an invalid outcome.
     }
-
+    cout << "leftIndex: " << closestLeftPointIndex << " | rightIndex: " << closestRightPointIndex << endl;
     return Outcome(data[closestLeftPointIndex], buffer[closestRightPointIndex]);
 
 }
