@@ -42,11 +42,12 @@ Outcome brute(const vector<Point>& data) {
 #endif
 
 #include <iterator>
+#include <cmath>
 
 Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, long long delta);
 Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR);
 
-void sortX(const vector<Point>& data) {
+void sortX(vector<Point>& data) {
     sort(data.begin(), data.end(), compareByX); //inplace sort by x
 }
 
@@ -63,24 +64,26 @@ void sortY(const vector<Point>& data, vector<Point>::const_iterator start, vecto
 }
 
 
-Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, long long delta) {
-    int closestLeftPointIndex;
-    int closestRightPointIndex;
-
-    while (data[iL].x < data[xDivI].x - delta) {
+Outcome combine(vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, long long delta) {
+    int closestLeftPointIndex = -1;
+    int closestRightPointIndex = -1;
+    
+    while (pow(abs(data[iL].x - data[xDivI].x), 2) > delta) { // Align iL to the first point on the left that is within the delta region.
         iL++;
     }
 
-    while (data[iR].x > data[xDivI].x + delta) {
+    while (pow(abs(data[iR].x - data[xDivI].x), 2) > delta) { // Allign iR to the first point on the right that is within the delta region.
         iR--;
     }
-
+    
     int rPointsWithinDelta = 0;
-    int yInDelta = xDivI + 1;
-    for (; data[yInDelta].x < data[xDivI].x + delta; yInDelta++) {
+    int yInDelta = xDivI + 1; // yInDelta represents the index 
+    for (; pow(data[yInDelta].x - data[xDivI].x,2) < delta && yInDelta <= iR; yInDelta++) { // troublesome code
         rPointsWithinDelta++;
+        std::cout << "Line 82; in loop." << endl;
+        std::cout << pow(data[yInDelta].x,2) << " : " << pow(data[xDivI].x,2) + delta << endl;
     } 
-
+    std::cout << "Line 83." << endl;
     vector<Point>::const_iterator start = data.begin() + xDivI + 1;
     vector<Point>::const_iterator end = data.begin() + yInDelta;
     sortY(data, start, end, buffer);
@@ -89,14 +92,14 @@ Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xD
     for (int i = iL; i <= xDivI; i++) {
 
         for (int j = 0; j < rPointsWithinDelta; j++) {
-            if (buffer[j].y > data[i].y + delta) {
+            if (pow(abs((buffer[j].y - data[i].y)),2) > delta && buffer[j].y > data[i].y) {
                 continue;
             }
-            else if (buffer[j].y < data[i].y - delta) {
+            else if (pow(abs((buffer[j].y - data[i].y)), 2) > delta && buffer[j].y < data[i].y) {
                 break;
             }
             else {
-
+            
                 if (distSquared(data[i],buffer[j]) < delta) {
                     closestLeftPointIndex = i;
                     closestRightPointIndex = j;
@@ -109,11 +112,15 @@ Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xD
 
     }
 
+    if (closestLeftPointIndex == -1 || closestRightPointIndex == -1) {
+        return Outcome(); // If there were no valid points, return an invalid outcome.
+    }
+
     return Outcome(data[closestLeftPointIndex], buffer[closestRightPointIndex]);
 
 }
 
-Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
+Outcome divide(vector<Point>& data, Point* buffer, int iL, int iR) {
 
     if ((iR - iL + 1) <= CUTOFF) { // Call brute function
         vector<Point>::const_iterator start = data.begin() + iL;
@@ -135,14 +142,19 @@ Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
 
     Outcome cOut = combine(data, buffer, iL, iR, xDivI, delta);
 
-    if (lOut.dsq <= rOut.dsq && lOut.dsq <= cOut.dsq) {
+    if (lOut.dsq != -1 && (lOut.dsq <= rOut.dsq || rOut.dsq == -1) && (lOut.dsq <= cOut.dsq || cOut.dsq == -1)) {
         return lOut;
     }
-    else if (rOut.dsq <= lOut.dsq && rOut.dsq <= cOut.dsq) {
+    else if (rOut.dsq != -1 && (rOut.dsq <= lOut.dsq || lOut.dsq == -1) && (rOut.dsq <= cOut.dsq || cOut.dsq == -1)) {
         return rOut;
     }
-    else {
+    else if (cOut.dsq != -1 && (cOut.dsq <= lOut.dsq || lOut.dsq == -1) && (cOut.dsq <= rOut.dsq || rOut.dsq == -1)) {
         return cOut;
+    }
+    else {
+        cout << "Error: no outcomes valid." << endl;
+        cout << "lOut.dsq = " << lOut.dsq << "| rOut.dsq = " << rOut.dsq << "| cOut.dsq = " << cOut.dsq << endl;
+        exit(-1); // If no outcomes were valid, then the program failed.
     }
 
 }
@@ -150,14 +162,17 @@ Outcome divide(const vector<Point>& data, Point* buffer, int iL, int iR) {
 // The student's implementation of the O(n log n) divide-and-conquer approach
 Outcome efficient(const vector<Point>& data) {
     std::cout << "Cutoff " << CUTOFF << " being used." << std::endl;
+    vector<Point> workableData = data;
+    sortX(workableData);
+
     Point* buffer = new Point[data.size()/2 + 1]; // size/2 + 1 because we plan to never sort the left half y-wise.
 
-    divide(data, buffer, 0, data.size()-1);
+    Outcome final = divide(workableData, buffer, 0, data.size()-1);
 
     delete[] buffer;
     buffer = nullptr;
 
-    return Outcome();
+    return final;
 }
 
 
