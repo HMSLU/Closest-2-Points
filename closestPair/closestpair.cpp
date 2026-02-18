@@ -5,10 +5,6 @@
 #include <sys/time.h>  // used to seed srand for extra credit
 using namespace std;
 
-
-
-
-
 // For convenience, we provide a brute-force implementation that can be applied
 // to any portion of a larger sequence by providing start and stop iterators.
 template <typename IT>
@@ -56,66 +52,53 @@ void sortY(vector<Point>& data) {
 }
 
 
-Outcome combine(vector<Point>* X_list, vector<Point>* Y_list, Point* buffer, long long xDivI, long long deltaSquared ) {
-    long long int X_listSize = X_list->size();
-    long long int Y_listSize = Y_list->size();
+Outcome combine(vector<Point>* X_list,
+                vector<Point>* Y_list,
+                Point* buffer,
+                long long xDivI,
+                long long deltaSquared)
+{
+    long long midX = (*X_list)[xDivI].x;
 
-    long long int buffLeft = 0;
-    long long int buffRight = X_listSize - 1;
+    int stripSize = 0;
 
-    cout << "Starting y-distribution." << endl;
-    for (long long int i = 0; i < Y_listSize; i++) { // Distribute all points within delta region to left and right lists
-        // ((*Y_list)[i].x - (*X_list)[i].x < 0 && (((*Y_list)[i].x - (*X_list)[xDivI].x) * ((*Y_list)[i].x - (*X_list)[xDivI].x)) < deltaSquared)
-        if ((*Y_list)[i].x - (*X_list)[i].x < 0 && (((*Y_list)[i].x - (*X_list)[xDivI].x) * ((*Y_list)[i].x - (*X_list)[xDivI].x)) < deltaSquared) {
-            buffer[buffLeft] = (*Y_list)[i];
-            buffLeft++;
-        }
-        //else if (Y_list->at(i).x - X_list->at(xDivI).x >= 0 && (Y_list->at(i).x - X_list->at(xDivI).x)*(Y_list->at(i).x - X_list->at(xDivI).x) < deltaSquared) {
-        else if ((*Y_list)[i].x - (*X_list)[xDivI].x < 0 && (((*Y_list)[i].x - (*X_list)[xDivI].x) * ((*Y_list)[i].x - (*X_list)[xDivI].x)) < deltaSquared) {
-            buffer[buffRight] = (*Y_list)[i];
-            buffRight--;
+    // Build strip (already sorted by y)
+    for (int i = 0; i < Y_list->size(); i++) {
+        long long dx = (*Y_list)[i].x - midX;
+        if (dx * dx < deltaSquared) {
+            buffer[stripSize++] = (*Y_list)[i];
         }
     }
-    cout << "ending y-distribution." << endl;
 
-    long long int leftPointI = 0;
-    long long int rightPointI = Y_listSize-1;
+    Outcome best;
+    best.dsq = deltaSquared;
 
-    for (long long int i = 0; i < buffLeft; i++) { // Compare all left points to right points 
+    for (int i = 0; i < stripSize; i++) {
+        for (int j = i + 1; j < stripSize; j++) {
+            long long dy = buffer[j].y - buffer[i].y;
 
-        for (long long int j = Y_listSize - 1; j > buffRight; j--) {
-
-            if (buffer[i].y - buffer[j].y < 0 && (buffer[i].y - buffer[j].y)*(buffer[i].y - buffer[j].y) > deltaSquared) {
-                continue;
-            }
-            else if (buffer[i].y - buffer[j].y >= 0 && (buffer[i].y - buffer[j].y)*(buffer[i].y - buffer[j].y) > deltaSquared) {
+            if (dy * dy >= best.dsq)
                 break;
+
+            long long d = distSquared(buffer[i], buffer[j]);
+            if (d < best.dsq) {
+                best = Outcome(buffer[i], buffer[j], d);
             }
-            else if ((buffer[i].y - buffer[j].y)*(buffer[i].y - buffer[j].y) < deltaSquared) {
-
-                if (distSquared(buffer[i],buffer[j]) < deltaSquared) {
-                    deltaSquared = distSquared(buffer[i], buffer[j]);
-                    leftPointI = i;
-                    rightPointI = j;
-                }
-
-            }
-
         }
-
     }
-    
-    return Outcome(buffer[leftPointI], buffer[rightPointI]);
 
+    return best;
 }
 
+
+/*
 Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long long iL, long long iR) {
 
     if ((iR - iL + 1) <= CUTOFF) { // Call brute function
-        vector<Point>::const_iterator start = X_data->begin() + iL;
-        vector<Point>::const_iterator end = X_data->begin() + iR + 1; // +1 because end iterator must point 1 past desired last element
-        vector<Point> dataSubset(start, end);
-        return brute(dataSubset);
+        auto start = X_data->begin() + iL;
+        auto end   = X_data->begin() + iR + 1;
+        return bruteUtility(start, end);
+;
     }
 
 
@@ -133,15 +116,15 @@ Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long 
 
 
     if (min({ lOut.dsq, rOut.dsq, cOut.dsq }) == lOut.dsq) {
-        cout << "Returning lOut! | " << lOut.dsq << endl;
+        //cout << "Returning lOut! | " << lOut.dsq << endl;
         return lOut;
     }
     else if (min({ lOut.dsq, rOut.dsq, cOut.dsq }) == rOut.dsq) {
-        cout << "Returning rOut! | " << rOut.dsq << endl;
+        //cout << "Returning rOut! | " << rOut.dsq << endl;
         return rOut;
     }
     else if (min({ lOut.dsq, rOut.dsq, cOut.dsq }) == cOut.dsq) {
-        cout << "Returning cOut! | " << cOut.dsq << endl;
+        //cout << "Returning cOut! | " << cOut.dsq << endl;
         return cOut;
     }
 
@@ -149,6 +132,52 @@ Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long 
     cout << "Error in divide: No outcome." << endl;
     exit(-1);
 
+}
+*/
+Outcome divide(vector<Point>* X_data,
+               vector<Point>* Y_data,
+               Point* buffer,
+               long long iL,
+               long long iR)
+{
+    if ((iR - iL + 1) <= CUTOFF) {
+        auto start = X_data->begin() + iL;
+        auto end   = X_data->begin() + iR + 1;
+        return bruteUtility(start, end);
+    }
+
+    long long xDivI = (iL + iR) / 2;
+    long long midX  = (*X_data)[xDivI].x;
+
+    // --- Split Y into left and right ---
+    vector<Point> Y_left;
+    vector<Point> Y_right;
+
+    Y_left.reserve(xDivI - iL + 1);
+    Y_right.reserve(iR - xDivI);
+
+    for (const Point& p : *Y_data) {
+        if (p.x <= midX)
+            Y_left.push_back(p);
+        else
+            Y_right.push_back(p);
+    }
+
+    // --- Recurse ---
+    Outcome lOut = divide(X_data, &Y_left, buffer, iL, xDivI);
+    Outcome rOut = divide(X_data, &Y_right, buffer, xDivI + 1, iR);
+
+    long long deltaSquared = min(lOut.dsq, rOut.dsq);
+
+    // --- Combine ---
+    Outcome cOut = combine(X_data, Y_data, buffer, xDivI, deltaSquared);
+
+    if (lOut.dsq <= rOut.dsq && lOut.dsq <= cOut.dsq)
+        return lOut;
+    if (rOut.dsq <= lOut.dsq && rOut.dsq <= cOut.dsq)
+        return rOut;
+
+    return cOut;
 }
 
 // The student's implementation of the O(n log n) divide-and-conquer approach
