@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <sys/time.h>  // used to seed srand for extra credit
+#include <iterator>
 using namespace std;
 
 
@@ -37,16 +38,8 @@ int compY(const void *p,const void *q){
 void sortX(const vector<Point>& data){
     sort(data.begin(),data.end(),compareByX); //inplace sort by x
 }
-void sortY(const vector<Point>& data,vector<Point>::iterator start,vector<Point>::iterator end, Point* buffer){
-    //inplace sort by Y,push values to scratch buffer space
-    int i = 0;
-    vector<Point>::iterator it;
-    for (it = start; it != end; it++){
-        buffer[i] = *it;
-        i++;
-    }   
-    
-    sort(buffer,buffer+i+1,compareByY); //must add one because i is an index, not n, where n = size of the array
+void sortY(const vector<Point>& data){
+    sort(data.begin(),data.end(),compareByY); //inplace sort by y
 }
 
 // For convenience, we provide a brute-force implementation that can be applied
@@ -81,43 +74,46 @@ Outcome brute(const vector<Point>& data) {
 #define CUTOFF 3          // you may change this or use the makefile to redefine the value
 #endif
 
-#include <iterator>
-
-
-
-Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, long long delta) {
-    /*vector<Point> data_WorkingVariable = data;*/
-    int closestLeftPointIndex;
-    int closestRightPointIndex;
-
-    while (data[iL].x < data[xDivI].x - delta) {
-        iL++;
+Outcome combine(vector<Point>& X_all, Point* buffer, int indexLeft, int indexRight, int xDivI, long long delta_squared,vector<Point>& Y_all) {
+    //blah
+    int closestLeftPointIndex{-1};
+    int closestRightPointIndex{-1};
+    while (pow(abs(X_all[indexLeft].x - X_all[xDivI].x), 2) > delta_squared) { // Align iL to the first point on the left that is within the delta region.
+        indexLeft++;
     }
 
-    while (data[iR].x > data[xDivI].x + delta) {
-        iR--;
+    while (pow(abs(X_all[indexRight].x - X_all[xDivI].x), 2) > delta_squared) { // Align iR to the first point on the right that is within the delta region.
+        indexRight--;
     }
-
+    /*
     int rPointsWithinDelta = 0;
-    // sort y into buffer
+    int yInDelta = xDivI + 1;
+    for (; data[yInDelta].x < data[xDivI].x + delta_squared; yInDelta++) {
+        rPointsWithinDelta++;
+    } 
+    vector<Point>::const_iterator start = data.begin() + xDivI + 1;
+    vector<Point>::const_iterator end = data.begin() + xDivI + yInDelta;
+    */
 
+    for (int i = 0;i < Y_all.size();i++){ // copy Y points to buffer
+        
+    }
 
-
-    for (int i = iL; i <= xDivI; i++) {
+    for (int i = indexLeft; i <= xDivI; i++) {
 
         for (int j = 0; j < rPointsWithinDelta; j++) {
-            if (buffer[j].y > data[i].y + delta) {
+            if (buffer[j].y > data[i].y + delta_squared) {
                 continue;
             }
-            else if (buffer[j].y < data[i].y - delta) {
+            else if (buffer[j].y < data[i].y - delta_squared) {
                 break;
             }
             else {
 
-                if (distSquared(data[i],buffer[j]) < delta) {
+                if (distSquared(data[i],buffer[j]) < delta_squared) {
                     closestLeftPointIndex = i;
                     closestRightPointIndex = j;
-                    delta = distSquared(data[i], buffer[j]);
+                    delta_squared = distSquared(data[i], buffer[j]);
 
                 }
 
@@ -125,90 +121,54 @@ Outcome combine(const vector<Point>& data, Point* buffer, int iL, int iR, int xD
         }
 
     }
+    return Outcome(data[closestLeftPointIndex],buffer[closestRightPointIndex]);
 }
-
-Outcome divide(const vector<Point>&data, Point* buffer, int iL, int iR) {
-
-    if ((iR - iL + 1) <= CUTOFF) { // Call brute function
-        vector<Point>::const_iterator start = data.begin() + iL;
-        vector<Point>::const_iterator end = data.begin() + iR + 1; // +1 because iterator must point 1 past desired last element
+Outcome divide(const vector<Point>& X_all,int indexLeft,int indexRight,Point* buffer,vector<Point>& Y_all){
+    if((indexRight - indexLeft + 1) <= CUTOFF){
+        vector<Point>::const_iterator start = X_all.begin() + indexLeft;
+        vector<Point>::const_iterator end = X_all.begin() + indexRight + 1; // +1 because iterator must point 1 past desired last element
         vector<Point> dataSubset(start, end);
-        return brute(dataSubset);
+        brute(dataSubset);
+    }   
+    int mid = (indexLeft + indexRight) / 2;
+
+    Outcome lOut = divide(X_all,indexLeft,mid,buffer,Y_all);
+    Outcome rOut = divide(X_all,mid + 1,indexRight,buffer,Y_all);
+
+    long long delta_squared = min(lOut.dsq,rOut.dsq);
+    Outcome cOut = combine(X_all,buffer,indexLeft,indexRight,mid,delta_squared,Y_all);
+
+
+    if (lOut.dsq <= rOut.dsq && lOut.dsq <= cOut.dsq) {
+        return lOut;
     }
-   
-
-    int xDivI = (iL + iR) / 2;
-
-
-
-    Outcome lOut = divide(data, buffer, iL, xDivI);
-
-    Outcome rOut = divide(data, buffer, xDivI+1, iR);
-
-    long long delta = min(lOut.dsq, rOut.dsq);
-
-    Outcome cOut = combine(data, buffer, iL, iR, xDivI, delta);
-
-
+    else if (rOut.dsq <= lOut.dsq && rOut.dsq <= cOut.dsq) {
+        return rOut;
+    }
+    else {
+        return cOut;
 
 }
 
+}
 // The student's implementation of the O(n log n) divide-and-conquer approach
 Outcome efficient(const vector<Point>& data) {
     std::cout << "Cutoff " << CUTOFF << " being used." << std::endl;
-    Point* buffer = new Point[data.size()/2 + 1]; // size/2 + 1 because we plan to never sort the left half y-wise.
 
+    vector<Point> X_all = data;
+    sortX(X_all);
+    vector<Point> Y_all = data;
+    sortY(Y_all);
 
-    delete[] buffer;
-    buffer = nullptr;
+    int leftIndex{0};
+    int rightIndex = X_all.size()-1;
+    
+    Point* buffer = new Point[data.size()];
+
+    divide(X_all,leftIndex,rightIndex,buffer);
 
     return Outcome();
 }
-
-Outcome divide(const vector<Point>& data,int indexLeft,int indexRight){
-    if((indexRight - indexLeft + 1) <= CUTOFF){
-        brute(data);
-    }
-    int mid = (indexLeft + indexRight) / 2;
-
-    Outcome lOut = divide(data,indexLeft,mid);
-    Outcome rOut = divide(data,mid + 1,indexRight);
-
-    long long delta = min(lOut.dsq,rOut.dsq);
-
-    
-    combine(data,);
-
-}
-/*
-long long getDelta(const vector<Point>& data,int indexLeft,int indexRight){ // return delta
-    if((indexRight - indexLeft + 1) <= CUTOFF){ //base case
-        return brute(data).dsq;
-    }
-
-    int mid = (indexLeft + indexRight) / 2;
-    long long lOutcome = getDelta(data,indexLeft,mid);
-    long long rOutcome = getDelta(data,mid + 1,indexRight);
-
-    long long delta = min(lOutcome,rOutcome);
-    return delta;
-
-}
-*/
-
-Outcome combine(const vector<Point>& data, Point* buffer, int indexLeft, int indexRight, long long delta){
-    //
-
-    long long deltaRegion = 2 * delta;
-    int mid = (indexLeft + indexRight) / 2;
-
-    for (int i = (mid - delta); i < (mid + delta); i++){
-
-    }
-
-    //buffer = data[divXIndex - delta: divXIndex + delta]
-}   
-
 // An extra credit algorithm
 Outcome extra(const vector<Point>& data) {
     srand(time(NULL));  // re-seeding random number generator
