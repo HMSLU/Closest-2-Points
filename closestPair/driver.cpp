@@ -85,7 +85,7 @@ vector<Point> randomizeCluster(int N, long seed) {
 #define FILE_NAME "data.csv"
 
 #define DATA_SIZE_MIN 10
-#define DATA_SIZE_MAX 100
+#define DATA_SIZE_MAX 1000
 #define DATA_SIZE_GROWTH dataSize *= 10
 
 #define CUTOFF_MIN 3

@@ -59,29 +59,11 @@ void sortY(vector<Point>& data) {
 
 
 Outcome combine(vector<Point>* X_list, vector<Point>* Y_list, Point* buffer, long long xDivI, long long deltaSquared) {
-    /*long long unsigned int X_listSize = X_list->size();*/
     long long unsigned int Y_listSize = Y_list->size();
 
     long long xDivX = X_list->at(xDivI).x;
 
-    /*long long unsigned int buffLeft = 0;
-    long long unsigned int buffRight = X_listSize - 1;*/
 
-
-
-
-    //cout << "Starting y-distribution." << endl;
-    //for (long long unsigned int i = 0; i < Y_listSize; i++) { // Distribute all points within delta region to left and right lists
-    //    if (Y_list->at(i).x - X_list->at(xDivI).x <= 0 && (Y_list->at(i).x - X_list->at(xDivI).x) * (Y_list->at(i).x - X_list->at(xDivI).x) < deltaSquared) {
-    //        buffer[buffLeft] = Y_list->at(i);
-    //        buffLeft++;
-    //    }
-    //    else if (Y_list->at(i).x - X_list->at(xDivI).x > 0 && (Y_list->at(i).x - X_list->at(xDivI).x)*(Y_list->at(i).x - X_list->at(xDivI).x) < deltaSquared) {
-    //        buffer[buffRight] = Y_list->at(i);
-    //        buffRight--;
-    //    }
-    //}
-    //cout << "ending y-distribution." << endl;
 
     long long unsigned bufferSize = 0;
 
@@ -120,43 +102,13 @@ Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long 
     if ((iR - iL + 1) <= Cutoff) { // Call brute function
         vector<Point>::iterator start = X_data->begin() + iL;
         vector<Point>::iterator end = X_data->begin() + iR + 1; // +1 because end iterator must point 1 past desired last element
-        //vector<Point> dataSubset(start, end);
 
-        //cout << "Data subset size: " << dataSubset.size() << endl;
-        //cout << "Data subset: ";
-        //for (unsigned long long t = 0; t < dataSubset.size(); t++) {
-        //    cout << dataSubset[t].x << ", " << dataSubset[t].y << " | ";
-        //}
-        //cout << endl;
 
         return bruteUtility(start, end);
     }
 
 
     long long xDivI = (iL + iR) / 2;
-
-    //// Test start
-    //long long midX = (*X_data)[xDivI].x;
-
-    //// --- Split Y into left and right ---
-    //vector<Point> Y_left;
-    //vector<Point> Y_right;
-
-    //Y_left.reserve(xDivI - iL + 1);
-    //Y_right.reserve(iR - xDivI);
-
-    //for (const Point& p : *Y_data) {
-    //    if (p.x <= midX)
-    //        Y_left.push_back(p);
-    //    else
-    //        Y_right.push_back(p);
-    //}
-
-    //// --- Recurse ---
-    //Outcome lOut = divide(X_data, &Y_left, buffer, iL, xDivI);
-    //Outcome rOut = divide(X_data, &Y_right, buffer, xDivI + 1, iR);
-
-    //// Test end
 
 
     Outcome lOut = divide(X_data, Y_data, buffer, iL, xDivI);
@@ -169,18 +121,6 @@ Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long 
     Outcome cOut = combine(X_data, Y_data, buffer, xDivI, deltaSquared);
 
 
-    //if (lOut.dsq == 0) {
-    //    cout << "ERROR: lOut.dsq = " << lOut.dsq << ". lOut p1 : " << lOut.p.x << ", " << lOut.p.y << " | lOut.p2 : " << lOut.q.x << ", " << lOut.q.y << endl;
-    //    exit(-2);
-    //}
-    //else if (rOut.dsq == 0) {
-    //    cout << "ERROR: rOut.dsq = " << rOut.dsq << ". rOut p1 : " << rOut.p.x << ", " << rOut.p.y << " | rOut.p2 : " << rOut.q.x << ", " << rOut.q.y << endl;
-    //    exit(-2);
-    //}
-    //else if (cOut.dsq == 0) {
-    //    cout << "ERROR: cOut.dsq = " << cOut.dsq << ". cOut p1 : " << cOut.p.x << ", " << cOut.p.y << " | cOut.p2 : " << cOut.q.x << ", " << cOut.q.y << endl;
-    //    exit(-2);
-    //}
 
 
     if (lOut.dsq <= rOut.dsq && lOut.dsq <= cOut.dsq) {
@@ -193,22 +133,7 @@ Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long 
         return cOut;
     }
 
-    /*if (min({ lOut.dsq, rOut.dsq, cOut.dsq }) == lOut.dsq) {
-        cout << "Returning lOut! | " << lOut.dsq << endl;
-        return lOut;
-    }
-    else if (min({ lOut.dsq, rOut.dsq, cOut.dsq }) == rOut.dsq) {
-        cout << "Returning rOut! | " << rOut.dsq << endl;
-        return rOut;
-    }
-    else if (min({ lOut.dsq, rOut.dsq, cOut.dsq }) == cOut.dsq) {
-        cout << "Returning cOut! | " << cOut.dsq << endl;
-        return cOut;
-    }*/
 
-
-    //cout << "Error in divide: No outcome." << endl;
-    //exit(-1);
 
 }
 
