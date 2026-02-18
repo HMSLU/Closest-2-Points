@@ -56,20 +56,22 @@ void sortY(vector<Point>& data) {
 }
 
 
-Outcome combine(vector<Point>* X_list, vector<Point>* Y_list, Point* buffer, long long xDivI, long long deltaSquared ) {
+Outcome combine(vector<Point>* X_list, vector<Point>* Y_list, Point* buffer, const long long xDivI, const long long deltaSquaredOriginal ) {
     long long unsigned int X_listSize = X_list->size();
     long long unsigned int Y_listSize = Y_list->size();
 
     long long unsigned int buffLeft = 0;
     long long unsigned int buffRight = X_listSize - 1;
 
+    long long deltaSquared = deltaSquaredOriginal;
+
     cout << "Starting y-distribution." << endl;
     for (long long unsigned int i = 0; i < Y_listSize; i++) { // Distribute all points within delta region to left and right lists
-        if (Y_list->at(i).x - X_list->at(xDivI).x < 0 && (Y_list->at(i).x - X_list->at(xDivI).x) * (Y_list->at(i).x - X_list->at(xDivI).x) < deltaSquared) {
+        if (Y_list->at(i).x - X_list->at(xDivI).x <= 0 && (Y_list->at(i).x - X_list->at(xDivI).x) * (Y_list->at(i).x - X_list->at(xDivI).x) < deltaSquared) {
             buffer[buffLeft] = Y_list->at(i);
             buffLeft++;
         }
-        else if (Y_list->at(i).x - X_list->at(xDivI).x >= 0 && (Y_list->at(i).x - X_list->at(xDivI).x)*(Y_list->at(i).x - X_list->at(xDivI).x) < deltaSquared) {
+        else if (Y_list->at(i).x - X_list->at(xDivI).x > 0 && (Y_list->at(i).x - X_list->at(xDivI).x)*(Y_list->at(i).x - X_list->at(xDivI).x) < deltaSquared) {
             buffer[buffRight] = Y_list->at(i);
             buffRight--;
         }
@@ -79,17 +81,19 @@ Outcome combine(vector<Point>* X_list, vector<Point>* Y_list, Point* buffer, lon
     long long unsigned int leftPointI = 0;
     long long unsigned int rightPointI = Y_listSize-1;
 
+    cout << "left, right indeces: " << leftPointI << ", " << rightPointI << endl;
+
     for (long long unsigned int i = 0; i < buffLeft; i++) { // Compare all left points to right points 
-
+        // cout << "Looking at index " << i << " for left." << endl;
         for (long long unsigned int j = Y_listSize - 1; j > buffRight; j--) {
-
-            if (buffer[i].y - buffer[j].y < 0 && (buffer[i].y - buffer[j].y)*(buffer[i].y - buffer[j].y) > deltaSquared) {
+            // cout << "Looking at index " << j << " for right." << endl;
+            if (buffer[i].y - buffer[j].y < 0 && (buffer[i].y - buffer[j].y)*(buffer[i].y - buffer[j].y) > deltaSquaredOriginal) {
                 continue;
             }
-            else if (buffer[i].y - buffer[j].y >= 0 && (buffer[i].y - buffer[j].y)*(buffer[i].y - buffer[j].y) > deltaSquared) {
+            else if (buffer[i].y - buffer[j].y >= 0 && (buffer[i].y - buffer[j].y)*(buffer[i].y - buffer[j].y) > deltaSquaredOriginal) {
                 break;
             }
-            else if ((buffer[i].y - buffer[j].y)*(buffer[i].y - buffer[j].y) < deltaSquared) {
+            else if ((buffer[i].y - buffer[j].y)*(buffer[i].y - buffer[j].y) <= deltaSquaredOriginal) {
 
                 if (distSquared(buffer[i],buffer[j]) < deltaSquared) {
                     deltaSquared = distSquared(buffer[i], buffer[j]);
@@ -102,7 +106,17 @@ Outcome combine(vector<Point>* X_list, vector<Point>* Y_list, Point* buffer, lon
         }
 
     }
-    
+    if (buffer[leftPointI] == buffer[rightPointI]) {
+        cout << "ERROR: Same point chosen for p1 and p2!" << endl;
+    }
+
+    if (leftPointI == 0 || rightPointI == Y_listSize - 1) {
+        Point dummy1{ 0,0 };
+        Point dummy2{ 0,0 };
+
+        return Outcome(dummy1, dummy2, deltaSquaredOriginal + 1);
+    }
+
     return Outcome(buffer[leftPointI], buffer[rightPointI]);
 
 }
@@ -110,9 +124,17 @@ Outcome combine(vector<Point>* X_list, vector<Point>* Y_list, Point* buffer, lon
 Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long long iL, long long iR) {
 
     if ((iR - iL + 1) <= CUTOFF) { // Call brute function
-        vector<Point>::const_iterator start = X_data->begin() + iL;
-        vector<Point>::const_iterator end = X_data->begin() + iR + 1; // +1 because end iterator must point 1 past desired last element
+        vector<Point>::iterator start = X_data->begin() + iL;
+        vector<Point>::iterator end = X_data->begin() + iR + 1; // +1 because end iterator must point 1 past desired last element
         vector<Point> dataSubset(start, end);
+
+        cout << "Data subset size: " << dataSubset.size() << endl;
+        cout << "Data subset: ";
+        for (unsigned long long t = 0; t < dataSubset.size(); t++) {
+            cout << dataSubset[t].x << ", " << dataSubset[t].y << " | ";
+        }
+        cout << endl;
+
         return brute(dataSubset);
     }
 
@@ -128,6 +150,21 @@ Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long 
     long long deltaSquared = min(lOut.dsq, rOut.dsq);
 
     Outcome cOut = combine(X_data, Y_data, buffer, xDivI, deltaSquared);
+
+
+    if (lOut.dsq == 0) {
+        cout << "ERROR: lOut.dsq = " << lOut.dsq << ". lOut p1 : " << lOut.p.x << ", " << lOut.p.y << " | lOut.p2 : " << lOut.q.x << ", " << lOut.q.y << endl;
+        exit(-2);
+    }
+    else if (rOut.dsq == 0) {
+        cout << "ERROR: rOut.dsq = " << rOut.dsq << ". rOut p1 : " << rOut.p.x << ", " << rOut.p.y << " | rOut.p2 : " << rOut.q.x << ", " << rOut.q.y << endl;
+        exit(-2);
+    }
+    else if (cOut.dsq == 0) {
+        cout << "ERROR: cOut.dsq = " << cOut.dsq << ". cOut p1 : " << cOut.p.x << ", " << cOut.p.y << " | cOut.p2 : " << cOut.q.x << ", " << cOut.q.y << endl;
+        exit(-2);
+    }
+
 
 
     if (min({ lOut.dsq, rOut.dsq, cOut.dsq }) == lOut.dsq) {
@@ -151,6 +188,9 @@ Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long 
 
 // The student's implementation of the O(n log n) divide-and-conquer approach
 Outcome efficient(const vector<Point>& data) {
+
+
+
     std::cout << "Cutoff " << CUTOFF << " being used." << std::endl;
     vector<Point> X_data = data;
     vector<Point> Y_data = data;
