@@ -64,93 +64,50 @@ void sortY(const vector<Point>& data, vector<Point>::const_iterator start, vecto
 }
 
 
-Outcome combine(vector<Point>& data, Point* buffer, int iL, int iR, int xDivI, long long delta) {
-    int closestLeftPointIndex = -1;
-    int closestRightPointIndex = -1;
+Outcome combine(vector<Point>* X_list, Point* buffer, int xDivI, long long deltaSquared, vector<Point>* Y_list /*Sorted high point to low*/) {
     
-    std::cout << "iL before: " << iL << endl;
-    std::cout << "size of data: " << data.size() << endl;
-    std::cout << "data[iL] x,y  " << &data[iL] << " " << data[iL].x << " " << data[iL].y << endl;
+    int buffLeft = 0;
+    int buffRight = X_list->size() - 1;
 
-    if (iL >= xDivI) { // Catches the error case in which iL >= xDivI
-        std::cout << "iL >= than xDivI" << endl;
-        cout << "iL: " << iL << " | xDivI: " << xDivI << endl;
-        exit(-1);
-
-    }
-
-    int runs = 0; // Test line
-    while (pow(data[iL].x - data[xDivI].x, 2) > delta) { // Align iL to the first point on the left that is within the delta region.
-        iL++;
-        runs++;
-
-        if (iL >= xDivI) { // Catches the error case in which iL >= xDivI
-            std::cout << "ERROR: iL >= than xDivI" << endl;
-            cout << "iL: " << iL << " | xDivI: " << xDivI << endl;
-            cout << "X difference squared: " << pow(abs(data[iL].x - data[xDivI].x), 2) << endl;
-            cout << "Delta squared: " << delta << endl;
-
-            exit(-1);
-
+    for (int i = 0; i < Y_list->size(); i++) { // Distribute all points within delta region to left and right lists
+        if (Y_list->at(i).x - X_list->at(xDivI).x < 0 && pow(Y_list->at(i).x - X_list->at(xDivI).x,2) < deltaSquared) {
+            buffer[buffLeft] = Y_list->at(i);
+            buffLeft++;
         }
-
-        //cout << runs << endl;
+        else if (Y_list->at(i).x - X_list->at(xDivI).x >= 0 && pow(Y_list->at(i).x - X_list->at(xDivI).x, 2) < deltaSquared) {
+            buffer[buffRight] = Y_list->at(i);
+            buffRight--;
+        }
     }
 
-    std::cout << "iL after: " << iL << endl;
+    int leftPointI = 0;
+    int rightPointI = Y_list->size()-1;
 
-    std::cout << "iR before: " << iR << endl;
+    for (int i = 0; i < buffLeft; i++) { // Compare all left points to right points 
 
-    while (pow(abs(data[iR].x - data[xDivI].x), 2) > delta) { // Allign iR to the first point on the right that is within the delta region.
-        iR--;
-    }
+        for (int j = Y_list->size() - 1; j > buffRight; j--) {
 
-    std::cout << "iR before: " << iR << endl;
-    
-    int rPointsWithinDelta = 0;
-    int yInDelta = xDivI + 1; // yInDelta represents the index 
-    for (; pow(data[yInDelta].x - data[xDivI].x,2) < delta && yInDelta <= iR; yInDelta++) { // troublesome code
-        rPointsWithinDelta++;
-        std::cout << "Line 82; in loop." << endl;
-        std::cout << pow(data[yInDelta].x,2) << " : " << pow(data[xDivI].x,2) + delta << endl;
-    } 
-    std::cout << "Line 83." << endl;
-    vector<Point>::const_iterator start = data.begin() + xDivI + 1;
-    vector<Point>::const_iterator end = data.begin() + yInDelta;
-    sortY(data, start, end, buffer);
-    std::cout << "Line 90." << endl;
-
-
-    for (int i = iL; i <= xDivI; i++) {
-
-        for (int j = 0; j < rPointsWithinDelta; j++) {
-            if (pow(abs((buffer[j].y - data[i].y)),2) > delta && buffer[j].y > data[i].y) {
+            if (buffer[i].y - buffer[j].y < 0 && pow(buffer[i].y - buffer[j].y, 2) > deltaSquared) {
                 continue;
             }
-            else if (pow(abs((buffer[j].y - data[i].y)), 2) > delta && buffer[j].y < data[i].y) {
+            else if (buffer[i].y - buffer[j].y >= 0 && pow(buffer[i].y - buffer[j].y, 2) > deltaSquared) {
                 break;
             }
-            else {
-            
-                if (distSquared(data[i],buffer[j]) < delta) {
-                    closestLeftPointIndex = i;
-                    closestRightPointIndex = j;
-                    delta = distSquared(data[i], buffer[j]);
+            else if (pow(buffer[i].y - buffer[j].y, 2) < deltaSquared) {
 
+                if (distSquared(buffer[i],buffer[j]) < deltaSquared) {
+                    deltaSquared = distSquared(buffer[i], buffer[j]);
+                    leftPointI = i;
+                    rightPointI = j;
                 }
 
             }
+
         }
 
     }
-    std::cout << "Line 115." << endl;
-
-    if (closestLeftPointIndex == -1 || closestRightPointIndex == -1) {
-        std::cout << "Invalid points." << endl;
-        return Outcome(); // If there were no valid points, return an invalid outcome.
-    }
-    cout << "leftIndex: " << closestLeftPointIndex << " | rightIndex: " << closestRightPointIndex << endl;
-    return Outcome(data[closestLeftPointIndex], buffer[closestRightPointIndex]);
+    
+    return Outcome(buffer[leftPointI], buffer[rightPointI]);
 
 }
 
@@ -176,20 +133,20 @@ Outcome divide(vector<Point>& data, Point* buffer, int iL, int iR) {
 
     Outcome cOut = combine(data, buffer, iL, iR, xDivI, delta);
 
-    if (lOut.dsq != -1 && (lOut.dsq <= rOut.dsq || rOut.dsq == -1) && (lOut.dsq <= cOut.dsq || cOut.dsq == -1)) {
+
+    if (min(lOut.dsq, rOut.dsq, cOut.dsq) == lOut.dsq) {
         return lOut;
     }
-    else if (rOut.dsq != -1 && (rOut.dsq <= lOut.dsq || lOut.dsq == -1) && (rOut.dsq <= cOut.dsq || cOut.dsq == -1)) {
+    else if (min(lOut.dsq, rOut.dsq, cOut.dsq) == rOut.dsq) {
         return rOut;
     }
-    else if (cOut.dsq != -1 && (cOut.dsq <= lOut.dsq || lOut.dsq == -1) && (cOut.dsq <= rOut.dsq || rOut.dsq == -1)) {
+    else if (min(lOut.dsq, rOut.dsq, cOut.dsq) == cOut.dsq){
         return cOut;
     }
-    else {
-        cout << "Error: no outcomes valid." << endl;
-        cout << "lOut.dsq = " << lOut.dsq << "| rOut.dsq = " << rOut.dsq << "| cOut.dsq = " << cOut.dsq << endl;
-        exit(-1); // If no outcomes were valid, then the program failed.
-    }
+
+
+    cout << "Error in divide: No outcome." << endl;
+    exit(-1);
 
 }
 
