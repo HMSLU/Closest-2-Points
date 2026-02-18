@@ -118,7 +118,7 @@ int main(int argc, char* argv[]) {
         ofstream outFile(FILE_NAME, std::ofstream::out | std::ofstream::trunc);
         outFile << "Cutoff,Data Size,Average Time (ms),# Trials" << endl;
 
-        for (Cutoff = CUTOFF_MIN; Cutoff < CUTOFF_MAX; CUTOFF_GROWTH) {
+        for (Cutoff = CUTOFF_MIN; Cutoff <= CUTOFF_MAX; CUTOFF_GROWTH) {
 
             for (int dataSize = DATA_SIZE_MIN; dataSize <= DATA_SIZE_MAX; DATA_SIZE_GROWTH) {
 
