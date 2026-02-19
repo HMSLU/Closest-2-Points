@@ -38,7 +38,7 @@ Outcome brute(const vector<Point>& data) {
 | that the logic of your implementation relies on this defined CUTOFF constant.
 --------------------------------------------------------------*/
 #ifndef CUTOFF
-#define CUTOFF 3          // you may change this or use the makefile to redefine the value
+#define CUTOFF 1200          // you may change this or use the makefile to redefine the value
 #endif
 
 #include <iterator>
@@ -123,18 +123,6 @@ Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long 
     Outcome cOut = combine(X_data, Y_data, buffer, xDivI, deltaSquared);
 
 
-    //if (lOut.dsq == 0) {
-    //    cout << "ERROR: lOut.dsq = " << lOut.dsq << ". lOut p1 : " << lOut.p.x << ", " << lOut.p.y << " | lOut.p2 : " << lOut.q.x << ", " << lOut.q.y << endl;
-    //    exit(-2);
-    //}
-    //else if (rOut.dsq == 0) {
-    //    cout << "ERROR: rOut.dsq = " << rOut.dsq << ". rOut p1 : " << rOut.p.x << ", " << rOut.p.y << " | rOut.p2 : " << rOut.q.x << ", " << rOut.q.y << endl;
-    //    exit(-2);
-    //}
-    //else if (cOut.dsq == 0) {
-    //    cout << "ERROR: cOut.dsq = " << cOut.dsq << ". cOut p1 : " << cOut.p.x << ", " << cOut.p.y << " | cOut.p2 : " << cOut.q.x << ", " << cOut.q.y << endl;
-    //    exit(-2);
-    //}
 
 
     if (lOut.dsq <= rOut.dsq && lOut.dsq <= cOut.dsq) {
@@ -147,22 +135,7 @@ Outcome divide(vector<Point>* X_data,vector<Point>* Y_data, Point* buffer, long 
         return cOut;
     }
 
-    /*if (min({ lOut.dsq, rOut.dsq, cOut.dsq }) == lOut.dsq) {
-        cout << "Returning lOut! | " << lOut.dsq << endl;
-        return lOut;
-    }
-    else if (min({ lOut.dsq, rOut.dsq, cOut.dsq }) == rOut.dsq) {
-        cout << "Returning rOut! | " << rOut.dsq << endl;
-        return rOut;
-    }
-    else if (min({ lOut.dsq, rOut.dsq, cOut.dsq }) == cOut.dsq) {
-        cout << "Returning cOut! | " << cOut.dsq << endl;
-        return cOut;
-    }*/
 
-
-    //cout << "Error in divide: No outcome." << endl;
-    //exit(-1);
 
 }
 
