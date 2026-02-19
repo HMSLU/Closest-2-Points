@@ -84,12 +84,12 @@ vector<Point> randomizeCluster(int N, long seed) {
 #define ALTERED true
 #define FILE_NAME "data.csv"
 
-#define DATA_SIZE_MIN 200000
-#define DATA_SIZE_MAX 200000
-#define DATA_SIZE_GROWTH dataSize *= 5
+#define DATA_SIZE_MIN 10
+#define DATA_SIZE_MAX 1500000
+#define DATA_SIZE_GROWTH dataSize *= 2
 
-#define CUTOFF_MIN 100
-#define CUTOFF_MAX 1000
+#define CUTOFF_MIN 500
+#define CUTOFF_MAX 500
 #define CUTOFF_GROWTH Cutoff += 5
 
 int Cutoff = CUTOFF_MIN;
@@ -156,6 +156,7 @@ int main(int argc, char* argv[]) {
 
         outFile.close();
 
+        std::cout << '\a';
         return 0;
     }
     

@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=-g -O3 -std=c++11 -Wall
-OBJS=driver.o point.o closestpair.o globals.o
+OBJS=driver.o point.o closestpair.o
 
 # support for overriding the cutoff value
 CUTOFF ?= 3         # default value
